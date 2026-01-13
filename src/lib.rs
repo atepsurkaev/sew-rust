@@ -90,27 +90,44 @@ impl Plottable for (f64, f64) {
 // Return a reference to the item farthest from the origin.
 // Note the explicit lifetime tying the returned reference to the input slice.
 pub fn furthest_from_origin<T: Plottable>(items: &[T]) -> Option<&T> {
-    // TODO: iterate, compute squared distance, track max, return reference
-    todo!()
+    items.iter().max_by(|a, b| {
+        let da = a.x() * a.x() + a.y() * a.y();
+        let db = b.x() * b.x() + b.y() * b.y();
+        da.partial_cmp(&db).unwrap()
+    })
+}
+
+pub fn min_by_key<T, K, F>(items: &[T], mut f: F) -> Option<&T>
+where
+    K: Ord,
+    F: FnMut(&T) -> K,
+{
+    let mut iter = items.iter();
+    let mut min = iter.next()?;
+    let mut min_key = f(min);
+
+    for item in iter {
+        let key = f(item);
+        if key < min_key {
+            min = item;
+            min_key = key;
+        }
+    }
+    Some(min)
 }
 
 // ---------- 5. ERRORS & OPTION/RESULT ----------
 pub fn parse_port(s: &str) -> Result<u16, String> {
-    // TODO: parse string into u16; map errors into a friendly String
-    // hint: use s.parse::<u16>()
-    todo!()
+    s.parse::<u16>().map_err(|e| format!("Invalid port '{}': {}", s, e))
 }
 
 // ---------- 6. ITERATORS & CLOSURES ----------
 pub fn even_squares(n: u32) -> Vec<u32> {
-    // TODO: all even numbers from 0..=n, squared, collected to Vec
-    // hint: (0..=n).filter(...).map(...).collect()
-    todo!()
+    (0..=n).filter(|x| x % 2 == 0).map(|x| x * x).collect()
 }
 
 // ---------- 7. USING A CRATE (rand) ----------
 pub fn roll_dice(sides: u8) -> u8 {
-    // TODO: return a value in 1..=sides using rand::Rng
-    // note: assume sides >= 1
-    todo!()
+    use rand::Rng;
+    rand::thread_rng().gen_range(1..=sides)
 }

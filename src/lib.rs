@@ -2,35 +2,28 @@
 
 // ---------- 1. BASICS ----------
 pub fn greet(name: &str) -> String {
-    // TODO: return "Hello, <name>!"
-    todo!()
+    format!("Hello, {}!", name)
 }
 
 pub fn sum(nums: &[i32]) -> i32 {
-    // TODO: sum all elements using an iterator
-    todo!()
+    nums.iter().sum()
 }
 
 pub fn flip(b: bool) -> bool {
-    // TODO: return the opposite boolean
-    todo!()
+    !b
 }
 
 // ---------- 2. OWNERSHIP & BORROWING ----------
 pub fn take_ownership(s: String) -> usize {
-    // TODO: return the length of s (taking ownership)
-    // hint: no borrowing here; s moves in
-    todo!()
+    s.len()
 }
 
 pub fn borrow_first_char(s: &str) -> Option<char> {
-    // TODO: return the first char without taking ownership
-    todo!()
+    s.chars().next()
 }
 
 pub fn push_exclamation(s: &mut String) {
-    // TODO: mutate s by appending a single '!' character
-    todo!()
+    s.push('!');
 }
 
 // ---------- 3. STRUCTS, ENUMS, METHODS ----------

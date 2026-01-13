@@ -35,8 +35,9 @@ pub struct Point {
 
 impl Point {
     pub fn distance_to(&self, other: &Point) -> f64 {
-        // TODO: Euclidean distance
-        todo!()
+        let dx = self.x - other.x;
+        let dy = self.y - other.y;
+        (dx * dx + dy * dy).sqrt()
     }
 
     pub fn origin() -> Self {
@@ -44,16 +45,29 @@ impl Point {
     }
 }
 
+impl std::fmt::Display for Point {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Shape {
     Circle { center: Point, radius: f64 },
     Rect { top_left: Point, w: f64, h: f64 },
+    Triangle { a: Point, b: Point, c: Point },
 }
 
 impl Shape {
     pub fn area(&self) -> f64 {
-        // TODO: match on self, compute area
-        todo!()
+        match self {
+            Shape::Circle { radius, .. } => std::f64::consts::PI * radius * radius,
+            Shape::Rect { w, h, .. } => w * h,
+            Shape::Triangle { a, b, c } => {
+                let area = a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
+                area.abs() * 0.5
+            }
+        }
     }
 }
 
